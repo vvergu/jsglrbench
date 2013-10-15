@@ -1,0 +1,42 @@
+// class Object extends Object { 
+// 	Object() { super(); }
+// } 
+
+class Nat extends Object {
+  Nat() { super(); }
+  Nat add(Nat n) { return n; }
+}
+
+class Zero extends Nat {
+  Zero() { super(); }
+  Nat add(Nat n) { return n; }
+}
+
+class Succ extends Nat {
+  Nat prev;
+  Succ(Nat prev) { 
+    super(); 
+    this.prev = prev;
+  }
+  Nat add(Nat n) { 
+    return new Succ(prev.add(n)); 
+  }
+}
+
+class Point extends Nat {
+  Nat x;
+  Nat y;
+  Point(Nat x, Nat y) { 
+    super(); 
+    this.x = x;
+    this.y = y;
+  }
+  Point move(Point p) {
+    return new Point(this.x.add(p.x), this.y.add(p.y));
+  }
+}
+
+
+new Point(new Zero(), new Zero())
+.move(new Point(new Succ(new Zero()), new Zero()))
+ 
