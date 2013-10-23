@@ -22,16 +22,18 @@ public class EntryPoint {
 				PARSE_TIMEOUT);
 
 		JSGLRI parser = new JSGLRI(config);
+		parser.setUseRecovery(false);
+		parser.setImplodeEnabled(false);
 
 		String filename = args[0];
 		String contents = readFile(filename);
 
+		long st = System.nanoTime();
 		for (int i = 0; i < 100; i++) {
-			long st = System.nanoTime();
 			parser.parse(contents, filename);
-			long et = System.nanoTime();
-			System.out.println("Parse time: " + (et - st) / (double) 1000000);
 		}
+		long et = System.nanoTime();
+		System.out.println("Parse time: " + (et - st) / (double) 1000000);
 
 	}
 

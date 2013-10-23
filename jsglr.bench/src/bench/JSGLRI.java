@@ -4,7 +4,6 @@ import org.spoofax.interpreter.terms.IStrategoTerm;
 import org.spoofax.jsglr.client.Asfix2TreeBuilder;
 import org.spoofax.jsglr.client.Disambiguator;
 import org.spoofax.jsglr.client.FilterException;
-import org.spoofax.jsglr.client.imploder.ITreeFactory;
 import org.spoofax.jsglr.client.imploder.TermTreeFactory;
 import org.spoofax.jsglr.client.imploder.TreeBuilder;
 import org.spoofax.jsglr.io.SGLR;
@@ -64,16 +63,16 @@ public class JSGLRI {
 		else
 			disambiguator = parser.getDisambiguator();
 		setUseRecovery(useRecovery);
-		if (!implodeEnabled) {
+//		if (!implodeEnabled) {
 			parser.setTreeBuilder(new Asfix2TreeBuilder(
 					Environment.INSTANCE().termFactory));
-		} else {
-			assert parser.getTreeBuilder() instanceof TreeBuilder;
-			@SuppressWarnings("unchecked")
-			ITreeFactory<IStrategoTerm> treeFactory = ((TreeBuilder) parser
-					.getTreeBuilder()).getFactory();
-			assert ((TermTreeFactory) treeFactory).getOriginalTermFactory() instanceof ParentTermFactory;
-		}
+//		} else {
+//			assert parser.getTreeBuilder() instanceof TreeBuilder;
+//			@SuppressWarnings("unchecked")
+//			ITreeFactory<IStrategoTerm> treeFactory = ((TreeBuilder) parser
+//					.getTreeBuilder()).getFactory();
+//			assert ((TermTreeFactory) treeFactory).getOriginalTermFactory() instanceof ParentTermFactory;
+//		}
 	}
 
 	public IStrategoTerm parse(String input, String filename) {
@@ -92,20 +91,20 @@ public class JSGLRI {
 		IStrategoTerm result;
 		try {
 			result = (IStrategoTerm) parser.parse(input, filename,
-					config.getStartSymbol(), true, cursorLocation);
+					config.getStartSymbol(), false, cursorLocation);
 		} catch (FilterException fex) {
-			if (fex.getCause() == null
-					&& parser.getDisambiguator().getFilterPriorities()) {
-				disambiguator.setFilterPriorities(false);
-				try {
-					result = (IStrategoTerm) parser.parse(input, filename,
-							config.getStartSymbol());
-				} finally {
-					disambiguator.setFilterPriorities(true);
-				}
-			} else {
+//			if (fex.getCause() == null
+//					&& parser.getDisambiguator().getFilterPriorities()) {
+//				disambiguator.setFilterPriorities(false);
+//				try {
+//					result = (IStrategoTerm) parser.parse(input, filename,
+//							config.getStartSymbol());
+//				} finally {
+//					disambiguator.setFilterPriorities(true);
+//				}
+//			} else {
 				throw fex;
-			}
+//			}
 		}
 		return result;
 	}
